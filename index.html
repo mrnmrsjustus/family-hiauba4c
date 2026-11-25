@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noimageindex">
+<title>Justus Family Guestbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{
+  --hero:#6B8A63; --hero-deep:#56724F; --paper:#FBFBF7; --ink:#1D2A22; --muted:#5A675E; --line:#DCE2D6;
+  --blue:#1E3A8A; --green:#2B7A55; --sage:#5E7E54; --err:#A43A2F;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--hero);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;
+  padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(32px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:grid;place-items:center;min-height:100vh}
+.book{width:100%;max-width:520px;background:var(--paper);border-radius:22px;box-shadow:0 24px 60px rgba(20,35,25,.28);overflow:hidden}
+.spine{height:12px;background:repeating-linear-gradient(90deg,var(--blue) 0 33.3%,var(--green) 33.3% 66.6%,var(--sage) 66.6% 100%)}
+.inner{padding:36px 32px 30px}
+@media (max-width:440px){.inner{padding:28px 20px 24px}}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(34px,8vw,44px);line-height:1;margin:8px 0 10px;letter-spacing:-.02em;text-wrap:balance}
+.lede{color:var(--muted);margin:0 0 24px}
+form{display:grid;gap:14px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:440px){.row{grid-template-columns:1fr}}
+label{display:grid;gap:6px;font-size:14px;font-weight:600}
+label span.opt{font-weight:400;color:var(--muted)}
+input,textarea{font:inherit;font-size:17px;color:var(--ink);background:#fff;border:1px solid var(--line);border-bottom:2px solid #C9D2C2;border-radius:10px;padding:11px 12px;width:100%;min-width:0}
+textarea{resize:vertical;min-height:84px}
+input:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(43,122,85,.18)}
+button{font:600 17px/1 var(--body);color:#fff;background:var(--green);border:0;border-radius:12px;padding:15px 18px;cursor:pointer;margin-top:4px}
+button:hover{background:#246848}
+button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button[disabled]{opacity:.65;cursor:progress}
+.msg{min-height:1.4em;margin:2px 0 0;font-size:15px}
+.msg.err{color:var(--err)}
+.msg.ok{color:var(--green)}
+.foot{margin:22px 0 0;padding-top:16px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.book{animation:rise .5s ease both}@keyframes rise{from{transform:translateY(10px);opacity:.6}}}
+</style>
+</head>
+<body>
+<main class="book">
+  <div class="spine" aria-hidden="true"></div>
+  <div class="inner">
+    <p class="eyebrow">The Justus Family · 2026</p>
+    <h1>Sign our guestbook</h1>
+    <p class="lede">Thanks for stopping by! Sign in to see our year.</p>
+    <form id="gb" autocomplete="on" novalidate>
+      <div class="row">
+        <label for="first">First name<input id="first" name="first" autocomplete="given-name" required></label>
+        <label for="last">Last name<input id="last" name="last" autocomplete="family-name" required></label>
+      </div>
+      <label for="note">Leave us a note <span class="opt">(optional)</span><textarea id="note" name="note" maxlength="500"></textarea></label>
+      <button id="go" type="submit">Sign the guestbook</button>
+      <p class="msg" id="msg" role="status" aria-live="polite"></p>
+    </form>
+    <p class="foot">With love from Nick, Joanna &amp; JR</p>
+  </div>
+</main>
+<script>
+const CFG = {"salt": "tZiJ/tmdmzfQ2G9X9RnDfA==", "iter": 310000, "wraps": [{"iv": "LCJ29+nCoEEPBmrj", "ct": "0X5wicvP0nqNRWSQbVWw8s7AGh+ENvYG+bl3qAc+JL4ItNFJo/5vZCOSu3Fy8nJL"}, {"iv": "gpj5Ysx/UZ1M6+NX", "ct": "B175u3NAVjQYt3Tiqe8GF9elhXy/3BxYdEd/RaA83b3EuAoenxDlRqaE9KE9ST9h"}, {"iv": "U4x85kGG2JH/md6l", "ct": "O7u2ThLUGegVyZc0B0B2e3XWbCLa9xKxdxSD1ZoxRavsiEufqCv7lEw8hx8QzGDM"}, {"iv": "23yIlj0u+Ti+BWNg", "ct": "OvbSK/CX/L6peTdEn0rYHUBsbgn8X+eJ7THUB+TxB5id/MU7zcLrFSJHxhh3qAAp"}, {"iv": "/wsMyNX0bhnenC3p", "ct": "LsSbTDqyC05YS6SgGL+QBTQqywi10AT/cKxr8vNZ2+IM1aaAToGRwrl/OAF3gekJ"}, {"iv": "WhuJEv+eTlHxwDZf", "ct": "lbdwN8q0LC2LCewPZ9DRhjK80LhG1CW8QclFvaEsLJ5l0h+qRLhK9PkevXk+Twr1"}, {"iv": "mneLIiSf0SEQODsl", "ct": "UOPa3gPe0AYyVgKc1CdUz+cEUQmVPwIT9d2VQjeYbfjs4reTpz3UGXUOtf3uHKue"}, {"iv": "egQymf1t3qDEatBn", "ct": "tGZeMwoB/dFwBov9qpEHFeeGaGy8ONEkCql0TNEQzQp6CuwMkbsG9GBCx/QpCD5M"}, {"iv": "DIbq8DQjA6W5DtX4", "ct": "lfmSETyH8myOVyUkJxqiVbnHeTPF4jidkZh0bkLxdjXXqIaeKa9P7yGpg7OwScVS"}, {"iv": "OIsxQMtJF5/d3eWp", "ct": "XQa0vdFvwnDudT9pvUbHRrKZonnLUCRGJetEslrvhOLfAm7ydHZgfBs1CPtl2KAA"}, {"iv": "HkJSVQNpsWGXAK1H", "ct": "0cpiH+GUGK/dwL5xDtcAR7SY8x7Ke17F6NlL+g+5Ky/9JPJCnTS6anH4IuRVGDbk"}, {"iv": "SGNoJzXSqrI6kAQQ", "ct": "fpsUtbF5U45LZC6lhlMkGZiFBl/qLhMGxGQnxgoisjKnPp52byrSUz01++vb75A6"}, {"iv": "9olK+4+PRpn7wdGN", "ct": "5a59Fe3Scg9Hz3FZp28OMTqRJ/hm6lrqB0ptSWpvZ7Er63jRyR4JUlvMjBKwXuLr"}, {"iv": "4mgmH12MxKGc/05s", "ct": "fMzHLEiy4m2q1RXF1cU4+flftIr4QvQjxK+ls+YFpUf8NnD++pLiqdziyP8izjTb"}, {"iv": "r5UcpT6mivYn9sXG", "ct": "az+1NILTThYFkgs8YTCe8aXlg8D/WsURtGvMzVHeNhMux30GrW8CdMujp2u2ftYn"}, {"iv": "WgKeKGhFIo/t5DAI", "ct": "LwpTpIYJ5LePb1hlS0XwuDLB7H7mx8PYs4uDKSycugzaOpxSVClt8b8WC/6TJIca"}, {"iv": "j2xrACPxCQwwZZBG", "ct": "5jF5xW3lfnVihhzAJDINkkI+1RMkMlXLwEefUvGqeE2bNGbj59kPM9mv+mvFm0zG"}, {"iv": "QY+qN954xRYDNSry", "ct": "zDj0c9cEbUsy1hoPzThZtXh+lSwM8r+pM2P/R4/3iGjsRoZfLLWsfO+7UULGRsN8"}, {"iv": "TBzRhlnr00+vFASl", "ct": "nEdsmg+eqbt85gpDmZ11Y9FMb3Vx8KojesAygOOh6DTTRpoxQS5JbTk19zSmCvzd"}, {"iv": "V52ZhmdxdS/rU6W/", "ct": "ovApf+pA4858H24OIxQpe7VabjFts2OvquQiw1vAM8soYywo6MLgA6796AblzE7L"}, {"iv": "1+pxJ9sXIc860xRb", "ct": "fkxOJ39BsEM7vV0GKDqGpDs8RRJYK8qPXNBNIhW/rQ9Lc78capcJ2RC+MJsw/KZ1"}, {"iv": "VRqXzUKCXpNjyrb5", "ct": "l44GGvfO9wXB5XbDtZpQmNEKS8218Z05MbHGNo9xQIV3vFDQRYWP8RpGA7bv3ea0"}, {"iv": "vldaP5sBOi0k5lAf", "ct": "wIZSxRxgfOaI0DIk6ynidqdwr5fnAA1MpYmsyFLyiSt3Qne+HN/dSkym8vUaBcv/"}, {"iv": "GF78N61oUcvg+bbc", "ct": "5dFXlzzwrKcY6GM5DO5zD719jE8UL2kN0dCSgY+s5w18D4TzUQkO8cRQAUskUm0H"}, {"iv": "fRc9+9mTEQTxe3V+", "ct": "DEnFfCAYjTB4waudFUAKx+Ds0fpES+NIAtLPCQgiyYR9+v6wwdwp4mrzKMZ2ZmOE"}, {"iv": "a1bxZxAw7L4faVgZ", "ct": "9y6xVpJj8Ldn/JffPj41VsPX7ofblM33xoswvIbdZSqPcMhxMGjWLGecAC9Z9PVk"}, {"iv": "CqhBAwjKNn/Wg8ZH", "ct": "UysWyu3Q6hsfP5UUmNhTyMs1pBCaHShB97RV6xLwspr/sewWumRoNl9inMiKsvKf"}, {"iv": "tJ4CxrjHhkAv3YQY", "ct": "OllTkZI68ish4uuOJtM49uRVzljpQtfXnZkhXUrVfIKajAR/PO+QHnGNyICEwCvc"}, {"iv": "F3xdCGOUsakP7vnc", "ct": "0lCW6U74CM5mPXXDN0vqAn6p+zA+d6lRUzfFCcnkSpj287gmY9jrtfDcJDm1vYxX"}, {"iv": "c34dD1ywbSG80CnR", "ct": "MtPMaX7tA6KUsI9JEN0mlXBlFS2gO/NPRYdlO5kddXe9TftBtwsia4H5Twxhf4Pj"}, {"iv": "U/eLHIKZGWPV4Wef", "ct": "LNFhqxU7CGvWb6n5dSFknSkUOPit1vzUbC2O/Da0s1MR3NojpZ/zprjd6Bftdah/"}, {"iv": "JXTR9y6MON4gBusG", "ct": "vEdSmfUHF3sJ9KGDrJEIK8FbYiVqUugUTLhBg+pe8TWoGOtIz72O2K3539HRxe5J"}, {"iv": "kqhkcP4jYI3cq+Eq", "ct": "QHKXBNcUrXzDc9u5QXm/M5eUHebeedf3H+sEg50k/33VJTSzyTI3dU8RGEhrxsVn"}, {"iv": "K5CPu1hM5B09Q8Fq", "ct": "9xXhjM6uUNPMgWbr94RGgU8oZz7hQhWnK3z+fYnBHCUO1WmjyOCkRqCgNqopFI53"}, {"iv": "vQjqfheIodgrSqqj", "ct": "TS1lK1XqaXp3U9iVIcVaFxldkWJLIgnVxblTI8fQ7GZ5eH37M3S/+PlNmQjCWUN+"}, {"iv": "nN9PzH/X4b5gLaLk", "ct": "lKI6HtCMHF7sLQVp43gFtFwMqlF3xlnyQw4T/WcKjkvQgRheuBEZx1srip/ep4M4"}, {"iv": "orwkgcMcFbZMqmYX", "ct": "6w887CPrfAJvWOnVwQ43JKa/bmWvgpoEKjX89RYlOUV89qGklwT21a25mIc/Cx1O"}, {"iv": "fKaLO97K5Mb1dHkS", "ct": "NMTi22n8Y2BbJDoVjZau9g4kDm88+P+fzMeth4vl13ewWGPsD6ck1rJyP+J5HC3v"}, {"iv": "xmQQyWECBQLlubHG", "ct": "K6B03+u1c8KKTy58YHVPA+zqTOYqvuF+rT6iFRDGbas+jm2d7L5QjZ9F5a1wcK10"}, {"iv": "dnnMmZXVoFA+Fiz1", "ct": "uB7zpKlLzXofwjL4/nhD3+JIxcV2rgUB2NYgfKE2MAtzl1YY63v8cqOy0+i7/xL3"}, {"iv": "Um9EIDknlpOReZhb", "ct": "AOYtAKISATjMsc9V+nvnkSG9WR2H2vPf7LL8QDkdEIq+GPJxfoFbUf7Zn5x2l62Y"}, {"iv": "1OVmXeTbp0bGVMLF", "ct": "RplmwumnM6YNQsHS318iDWi31/r29SaSM4WU7AUirrrfD0Z6hoLJlX9R2Y1jLf6A"}, {"iv": "hVf6fhDzm9SdzRXw", "ct": "dM9daqNY60YNzyr9w2A6L+gKJwK8l+PDWS3SHXvH5MYzQmRAPsouFmBg7uD5G9u1"}, {"iv": "vvH0Jksv0fuXEygf", "ct": "M/m7J/t7sVfkBOGhaCdIpIk+bP8YBRgdC/rSCTCmDUKUOkZzP2mrGiderk3OshpX"}, {"iv": "/8+1TN5j/I/Ok3Ge", "ct": "YC/lGXBcUlEz0el30X17s9BwZdAZj38o7eAWd9umu4upVEAueqjiDAmjHOBeHZxA"}, {"iv": "Hgx2wgv7Ml3d0XZq", "ct": "rC6P6oIJwSdmI1RziJ1kHuJFgFDDlVV5l+/te3HegwF+0ymxSScAXhM9DcNvXwHz"}, {"iv": "oaa1ShQBXWJXG57f", "ct": "9CKKEnHGAVi3/KZs0MxrN1FqtZpUjaFWDXt3PDS0HZFAGQ6xOZF04b+cBZKOKwvu"}, {"iv": "J4EU38VDq7GrZBy3", "ct": "mNm7R/uzM/jW4pWVHo+0q0eJ0VjywYeaqMlzLf/ygEPPiFmVlICJC6lKuk/NgXc7"}, {"iv": "Hy/kyiA0exXsiZLs", "ct": "T5N0hmg4oAY6qm9ZF+2M7/u3BuLsgQ2r/JOwdXHP9bVtek/xZdvVvM/JQm3wW/Sc"}, {"iv": "j1WY8QDinprdDc4l", "ct": "MJDmUe/uH/1IKXvCfFrDeICD/tHOUlKBq4iUtAMZsf79xTqrhW+bTBTZXtHtrF2B"}, {"iv": "l3Do8oQ7MCwW0flw", "ct": "S6Mn2Ks6B/4y32UbXL/Ar6BK94RzB5C5KwNvB0oe5AnQDHdG0//HAlXCriPVfrJE"}, {"iv": "914+5emA/0s2fJl9", "ct": "w9FNbwhGI4L9nl7j1z7q6mjfKrFro0YxTint5WCl9itno2ZhrsN5F7Ggeweh3nrF"}, {"iv": "rXmqXME5rm7YMJTm", "ct": "qrg5sx1VcrbLe/9bhLjxsTWlZeTOKbImT9gEnIUEkrcJiGmGNdrwHCw10ERc9jMR"}, {"iv": "H2w02X7QCXA+EQNL", "ct": "44WPfPc/yyTrznHbdHOFFiz+gQjCMMNIOywwaJ55miY1cV5xt2Qh1h9YiU1yf0/n"}, {"iv": "lGnA6TayPj1Y+csG", "ct": "MHOIiNWg68wCoMiYIRNoHQypH4yB+lEKGwx0X9A4SkiwjveBHmRFuH9wf4QXOQVH"}, {"iv": "yYgQ1n8nN3cAi9Ml", "ct": "I5S8rzYi8/IQv5JT9fo2oSYJdluCwi6OMEyrB7HkkQCiZRB8U05NK+DVmIFnRjoa"}, {"iv": "+TcE5DF67RKLxjQh", "ct": "vNMrqWltPaiIMem9zJf0rAgMXQCFE51r9+ijtBFa5giGp7G2qi87BP4l0c4ikLvY"}, {"iv": "JnHuvdY3RbQjvH0P", "ct": "df5/RZWZ0Enau9ix2/IbJvlhi/CXaVaDymp/60lvJcAd20/kSkBtkRU1PaPIIsNF"}, {"iv": "/dRjtX3BPJSW+CO0", "ct": "/9kjCwuf6cecqekqEY/Nclst32uaNdrTllYiEeCkb/b+6mYZk2aYBq7b6uDXWsE/"}, {"iv": "Qu/zAaELNkIVdTAS", "ct": "ZaJXlVHgF1S5htIryCL4IAKZoI09C8ubeSfGoFnezsG3FSS2szA9+gr0NBCQ6os+"}, {"iv": "K8vi14h7BkrRvxeF", "ct": "Kd9gjg3qtUieJIaTRiXXZsaQVmFP3n0CbfHuXgYKnJWWjgt5PywjnJ4VgE+t+wkD"}, {"iv": "CDSNu4PmOS03v/CP", "ct": "sTGulQct6giPMjJc/C73LLk9fYSXeLkjjr5taSyumXELhIE8+F52r7Tzqthy3wi3"}, {"iv": "pv1Olwd+D8WC6gVD", "ct": "uYjl/lKuUBcWh6UQlvH/YAcSd88MI47XfyVlkR4lTVnxol0GlvbwHQvrjYrygEpY"}, {"iv": "fQTIE0LEBxA+5CIY", "ct": "dM3p3609da2qcGvDh1hb2YB+gb98QRXrxWDlYZuDgWsHJn2plEt2I8qyAWZKSRFs"}, {"iv": "N3HkZacXykvwutrF", "ct": "Af0U58soVmBSV85K5RFSfpInp0dPaOT1kYX+/sJl56I7IgBeC1kWIuxP3w6S9uLB"}, {"iv": "tvhHVbEJMjz073Vo", "ct": "HBODEdJ/JxEm1dZMEDOjEVRzaLXX8iNGHo379Dmv0yPe5zZg2KETXSqUlhrcjZTE"}, {"iv": "rg2IUhSQ6JYjzh8z", "ct": "wyOpB5nQ7tNBzE/l51bCgZ8K3tjUxQ0HEoBb396+oRv1ioA5hahflxMpG8r79yOb"}, {"iv": "jIo0hrb1ppFUYAJ5", "ct": "GvGppwU5fWyUExYjLolQ/glsj4UyYFQmauHlJTMEOiPW8wMWjMGG6hZsuPtlLaOm"}, {"iv": "7MpE/rkgpCWcdSx2", "ct": "PkFZKBpP7D7dEYN415+Rvghc3AjWIYuet3yHjCUYPuZpMDFYupDNC9Oe87SXPO8G"}, {"iv": "5g7SOdhL3XxMLiJ5", "ct": "iHqj6KeIZj0zVgQOm84ZRevljoycF+XZ39oj/I85qCffvqblEq/A/QPvzul3bczY"}, {"iv": "1edNTyx3aHTPb+UK", "ct": "vXm6WDVZfPiEVFJYfabWLg+CnYtyJo41d1y5ToiSH94WYgioVzC6gbliwVcKUOYo"}], "page": "d/ad4c118b612d3166.bin", "photos": {"family-2026.jpg": "d/1add6aae6e1189fb.bin", "photos/5k.jpg": "d/622a631019c5efdb.bin", "photos/arcade.jpg": "d/dee9a260ff27f59b.bin", "photos/beach.jpg": "d/ad327934bd7806be.bin", "photos/campus-walk.jpg": "d/cc8b0bdd40fda5bc.bin", "photos/coloring.jpg": "d/ce8815cc6573cf68.bin", "photos/diploma.jpg": "d/41c54672bde92b69.bin", "photos/festival.jpg": "d/c2b3206e0631d5b2.bin", "photos/halloween.jpg": "d/aa91fdbfe91ad782.bin", "photos/joanna-first-gen.jpg": "d/991f684a73d4b4ca.bin", "photos/jr-birthday.jpg": "d/5feaf3321f142307.bin", "photos/lj-logo.png": "d/cdedbc3dda09113b.bin", "photos/nick-jr-shades.jpg": "d/60c7866fc46ddc60.bin", "photos/one-shirts.jpg": "d/de25a4072f5d8d19.bin", "photos/orchids.jpg": "d/ed7c7e9dce68f549.bin", "photos/silly-selfie.jpg": "d/aaa669079ca67ab1.bin", "photos/towel-selfie.jpg": "d/7755286b23ac6832.bin"}};
+const FORM = { url: "", first: "", last: "", note: "" }; // Google Form (filled in later)
+
+const enc = new TextEncoder(), dec = new TextDecoder();
+const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const norm = s => s.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z]/g, "");
+const msg = (t, cls) => { const m = document.getElementById("msg"); m.textContent = t; m.className = "msg " + (cls || ""); };
+
+async function unwrap(last){
+  const base = await crypto.subtle.importKey("raw", enc.encode(norm(last)), "PBKDF2", false, ["deriveKey"]);
+  const kek = await crypto.subtle.deriveKey({name:"PBKDF2", salt:b64(CFG.salt), iterations:CFG.iter, hash:"SHA-256"}, base, {name:"AES-GCM", length:256}, false, ["decrypt"]);
+  for (const w of CFG.wraps){
+    try {
+      const raw = await crypto.subtle.decrypt({name:"AES-GCM", iv:b64(w.iv)}, kek, b64(w.ct));
+      return crypto.subtle.importKey("raw", raw, "AES-GCM", false, ["decrypt"]);
+    } catch(e) {}
+  }
+  return null;
+}
+async function decryptFile(key, path){
+  const buf = new Uint8Array(await (await fetch(path, {cache:"no-cache"})).arrayBuffer());
+  return crypto.subtle.decrypt({name:"AES-GCM", iv:buf.slice(0,12)}, key, buf.slice(12));
+}
+async function openSite(key){
+  let html = dec.decode(await decryptFile(key, CFG.page));
+  const entries = Object.entries(CFG.photos);
+  const urls = await Promise.all(entries.map(async ([orig, file]) => {
+    const type = orig.endsWith(".png") ? "image/png" : "image/jpeg";
+    return URL.createObjectURL(new Blob([await decryptFile(key, file)], {type}));
+  }));
+  entries.forEach(([orig], i) => { html = html.split('"' + orig + '"').join('"' + urls[i] + '"'); });
+  document.open(); document.write(html); document.close();
+}
+function log(first, last, note){
+  if (!FORM.url) return;
+  try {
+    const d = new FormData(); d.append(FORM.first, first); d.append(FORM.last, last); d.append(FORM.note, note);
+    fetch(FORM.url, {method:"POST", mode:"no-cors", body:d}).catch(()=>{});
+  } catch(e) {}
+}
+
+document.getElementById("gb").addEventListener("submit", async e => {
+  e.preventDefault();
+  const first = document.getElementById("first").value.trim();
+  const last = document.getElementById("last").value.trim();
+  const note = document.getElementById("note").value.trim();
+  if (!first || !last){ msg("Please add your first and last name.", "err"); return; }
+  const btn = document.getElementById("go"); btn.disabled = true; msg("Checking the guest list…");
+  try {
+    const key = (await unwrap(last)) || (await unwrap(first));
+    if (!key){ msg("We couldn't find you on our guest list. Reach out to Joanna or Nick and we'll add you!", "err"); btn.disabled = false; return; }
+    log(first, last, note);
+    try { localStorage.setItem("jf-guest", (await unwrap(last)) ? last : first); } catch(e) {}
+    msg("Welcome, " + first + "! Opening our year…", "ok");
+    await openSite(key);
+  } catch(err){
+    msg("Something went wrong loading the page. Please try again.", "err"); btn.disabled = false;
+  }
+});
+
+(async () => {
+  let saved = null; try { saved = localStorage.getItem("jf-guest"); } catch(e) {}
+  if (!saved) return;
+  try { const key = await unwrap(saved); if (key) await openSite(key); } catch(e) {}
+})();
+</script>
+</body>
+</html>
