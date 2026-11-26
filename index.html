@@ -103,7 +103,7 @@ function log(first, last, note){
   if (!FORM.url) return;
   try {
     const d = new FormData(); d.append(FORM.first, first); d.append(FORM.last, last); d.append(FORM.note, note);
-    fetch(FORM.url, {method:"POST", mode:"no-cors", body:d}).catch(()=>{});
+    if (!(navigator.sendBeacon && navigator.sendBeacon(FORM.url, d))) fetch(FORM.url, {method:"POST", mode:"no-cors", body:d, keepalive:true}).catch(()=>{});
   } catch(e) {}
 }
 
@@ -117,7 +117,7 @@ document.getElementById("gb").addEventListener("submit", async e => {
   try {
     const key = (await unwrap(last)) || (await unwrap(first));
     if (!key){ msg("We couldn't find you on our guest list. Reach out to Joanna or Nick and we'll add you!", "err"); btn.disabled = false; return; }
-    log(first, last, note);
+    log(first, last, note); await new Promise(r=>setTimeout(r,500));
     try { localStorage.setItem("jf-guest", (await unwrap(last)) ? last : first); } catch(e) {}
     msg("Welcome, " + first + "! Opening our year…", "ok");
     await openSite(key);
